@@ -1,0 +1,5 @@
+[
+  {"cidr":"10.33.104.0/22","data":{"organization_name":"Faculteit Landbouw","city_name":"KULASSOC","country_name":"Belgium","country_code2":"BE","country_code3":"BEL","continent_code":"Europe/Brussels"}},
+  {"cidr":"10.33.108.0/24","data":{"organization_name":"Centrale Bibliotheek","city_name":"KULASSOC","country_name":"Belgium","country_code2":"BE","country_code3":"BEL","continent_code":"Europe/Brussels"}},
+  {"cidr":"10.33.109.0/24","data":{"organization_name":"Burgerlijke Bouwkunde","city_name":"KULASSOC","country_name":"Belgium","country_code2":"BE","country_code3":"BEL","continent_code":"Europe/Brussels"}}
+]
