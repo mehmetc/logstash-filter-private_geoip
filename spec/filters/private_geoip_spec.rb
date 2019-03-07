@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require "logstash/devutils/rspec/spec_helper"
 require "logstash/filters/private_geoip"
 require 'pp'
@@ -91,7 +93,7 @@ describe LogStash::Filters::PrivateGeoIP do
 
     sample(sample_data) do
       #insist {subject}.include?("geoip")
-      insist {subject["geoip"]["city_name"]} == "KULASSOC"
+      insist {subject.get("geoip")["city_name"]} == "KULASSOC"
     end
   end
 
@@ -132,7 +134,7 @@ describe LogStash::Filters::PrivateGeoIP do
     sample(sample_data) do
       insist {subject}.include?("geoip")
       reject {subject}.include?("private_geoip")
-      insist {subject["geoip"]["city_name"]} == "Leuven"
+      insist {subject.get("geoip")["city_name"]} == "Leuven"
     end
   end
 

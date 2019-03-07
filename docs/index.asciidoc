@@ -1,0 +1,112 @@
+:plugin: private_geoip
+:type: filter
+
+///////////////////////////////////////////
+START - GENERATED VARIABLES, DO NOT EDIT!
+///////////////////////////////////////////
+:version: %VERSION%
+:release_date: %RELEASE_DATE%
+:changelog_url: %CHANGELOG_URL%
+:include_path: ../../../../logstash/docs/include
+///////////////////////////////////////////
+END - GENERATED VARIABLES, DO NOT EDIT!
+///////////////////////////////////////////
+
+[id="plugins-{type}s-{plugin}"]
+
+=== private_geoip filter plugin
+
+include::{include_path}/plugin_header.asciidoc[]
+
+==== Description
+
+Extends or overwrites the GeoIP event data. If you have a large network with mixed calls from public and private IP address the private IP addresses are NOT resolved by GeoIP.
+
+
+[id="plugins-{type}s-{plugin}-options"]
+==== private_geoip Filter Configuration Options
+
+This plugin supports the following configuration options plus the <<plugins-{type}s-{plugin}-common-options>> described later.
+
+[cols="<,<,<",options="header",]
+|=======================================================================
+|Setting |Input type|Required
+| <<plugins-{type}s-{plugin}-source>> |<<string,string>>|Yes
+| <<plugins-{type}s-{plugin}-database>> |<<string,string>>|Yes
+| <<plugins-{type}s-{plugin}-target>> |<<string,string>>|Yes
+| <<plugins-{type}s-{plugin}-merge>> |<<boolean,boolean>>|No
+|=======================================================================
+
+=== example
+[source,ruby]
+-----
+filter {
+    private_geoip {
+        source => "client_ip"
+        database => "/path/to/network_file.json"
+        target => 'geoip'
+        merge => false
+    }
+}
+-----
+
+
+Also see <<plugins-{type}s-{plugin}-common-options>> for a list of options supported by all
+filter plugins.
+
+[id="plugins-{type}s-{plugin}-source"]
+===== `source`
+
+  * This is a required setting.
+  * Value type is <<string,string>>
+  * There is no default value for this setting.
+
+field that contains the ip address that needs to be mapped. This can be http_clientip, http_x_forwarded_for or ...
+
+[id="plugins-{type}s-{plugin}-database"]
+===== `database`
+
+  * This is a required setting.
+  * Value type is <<string,string>>
+  * There is no default value for this setting.
+
+location of the the JSON mapping file.
+
+==== Example: JSON Mapping definition
+  -  cidr: contains the network
+  -  data: can contain any key/value pair. If you want to extend/overwrite GeoIP take those fields ...
+[source,json]
+-----
+[
+    {"cidr":"10.33.104.0/22",
+     "data":{"organization_name":"XYZ Faculty",
+             "city_name":"Leuven",
+             "country_name":"Belgium",
+             ...
+            }
+    },
+    ...
+]
+-----
+
+
+
+[id="plugins-{type}s-{plugin}-target"]
+===== `target`
+
+  * This is a required setting.
+  * Value type is <<string,string>>
+  * There is no default value for this setting.
+
+where should the mapping result be stored. default = private_geoip but you could change it to geoip
+
+[id="plugins-{type}s-{plugin}-merge"]
+===== `merge`
+
+  * Value type is <<boolean,boolean>>
+  * Default value is `true`
+
+should the target be overwritten with the mapping result.
+
+[id="plugins-{type}s-{plugin}-common-options"]
+include::{include_path}/{type}.asciidoc[]

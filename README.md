@@ -1,49 +1,98 @@
-# logstash-filter-private_geoip
+# Logstash Plugin
 
-Extends or overwrites the GeoIP event data. If you have a large network with _mixed_ calls from **public** and **private** 
-IP address the **private** IP addresses are NOT resolved by GeoIP.
-   
-If you supply the different local networks they will get mapped.
-   
-## Filter definition   
-```json
-    filter {
-        private_geoip {
-            source => "client_ip"
-            database => "/path/to/network_file.json"
-            target => 'geoip'
-            merge => false
-        }
-    }
-```  
+[![Travis Build Status](https://travis-ci.org/logstash-plugins/logstash-filter-private_geoip.svg)](https://travis-ci.org/logstash-plugins/logstash-filter-private_geoip)
 
-* source: field that contains the ip address that needs to be mapped. This can be http_clientip, http_x_forwarded_for or ...
-* database: location of the the JSON mapping file.
-* target: where should the mapping result be stored. default = private_geoip but you could change it to geoip
-* merge: should the target be overwritten with the mapping result. default = true
-  
-## Mapping definition
-```JSON
-    [
-        {"cidr":"10.33.104.0/22",
-         "data":{"organization_name":"XYZ Faculty",
-                 "city_name":"Leuven",
-                 "country_name":"Belgium",
-                 ...
-                }
-        },
-        ...
-    ]
-``` 
- 
- * cidr: contains the network 
- * data: can contain any key/value pair. If you want to extend/overwrite GeoIP take those fields ...
-   
-   
-# Install
-   
+This is a plugin for [Logstash](https://github.com/elastic/logstash).
+
+It is fully free and fully open source. The license is Apache 2.0, meaning you are pretty much free to use it however you want in whatever way.
+
+## Documentation
+
+Logstash provides infrastructure to automatically build documentation for this plugin. We provide a template file, index.asciidoc, where you can add documentation. The contents of this file will be converted into html and then placed with other plugin documentation in a [central location](http://www.elastic.co/guide/en/logstash/current/).
+
+- For formatting config examples, you can use the asciidoc `[source,json]` directive
+- For more asciidoc formatting tips, see the excellent reference here https://github.com/elastic/docs#asciidoc-guide
+
+## Need Help?
+
+Need help? Try #logstash on freenode IRC or the https://discuss.elastic.co/c/logstash discussion forum.
+
+## Developing
+
+### 1. Plugin Developement and Testing
+
+#### Code
+- To get started, you'll need JRuby with the Bundler gem installed.
+
+- Create a new plugin or clone and existing from the GitHub [logstash-plugins](https://github.com/logstash-plugins) organization. We also provide [example plugins](https://github.com/logstash-plugins?query=private_geoip).
+
+- Install dependencies
 ```sh
-   bin/plugin install /your/local/plugin/logstash-filter-private_geoip.gem
-```   
+bundle install
+```
 
-Restart LogStash.
+#### Test
+
+- Update your dependencies
+
+```sh
+bundle install
+```
+
+- Run tests
+
+```sh
+bundle exec rspec
+```
+
+### 2. Running your unpublished Plugin in Logstash
+
+#### 2.1 Run in a local Logstash clone
+
+- Edit Logstash `Gemfile` and add the local plugin path, for example:
+```ruby
+gem "logstash-filter-awesome", :path => "/your/local/logstash-filter-awesome"
+```
+- Install plugin
+```sh
+# Logstash 2.3 and higher
+bin/logstash-plugin install --no-verify
+
+# Prior to Logstash 2.3
+bin/plugin install --no-verify
+
+```
+- Run Logstash with your plugin
+```sh
+bin/logstash -e 'filter {awesome {}}'
+```
+At this point any modifications to the plugin code will be applied to this local Logstash setup. After modifying the plugin, simply rerun Logstash.
+
+#### 2.2 Run in an installed Logstash
+
+You can use the same **2.1** method to run your plugin in an installed Logstash by editing its `Gemfile` and pointing the `:path` to your local plugin development directory or you can build the gem and install it using:
+
+- Build your plugin gem
+```sh
+gem build logstash-filter-awesome.gemspec
+```
+- Install the plugin from the Logstash home
+```sh
+# Logstash 2.3 and higher
+bin/logstash-plugin install --no-verify
+
+# Prior to Logstash 2.3
+bin/plugin install --no-verify
+
+```
+- Start Logstash and proceed to test the plugin
+
+## Contributing
+
+All contributions are welcome: ideas, patches, documentation, bug reports, complaints, and even something you drew up on a napkin.
+
+Programming is not a required skill. Whatever you've seen about open source and maintainers or community members  saying "send patches or die" - you will not see that here.
+
+It is more important to the community that you are able to contribute.
+
+For more information about contributing, see the [CONTRIBUTING](https://github.com/elastic/logstash/blob/master/CONTRIBUTING.md) file.

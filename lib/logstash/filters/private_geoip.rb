@@ -5,6 +5,7 @@ require "logstash/namespace"
 # The Private GeoIP filter add information about local private IP addresses
 # This is a CIDR filter on steroids
 
+
 class LogStash::Filters::PrivateGeoIP < LogStash::Filters::Base
   config_name "private_geoip"
 
@@ -49,7 +50,7 @@ class LogStash::Filters::PrivateGeoIP < LogStash::Filters::Base
 
   public
   def filter(event)
-    ip = IP::Address::Util.string_to_ip(event[@source])
+    ip = IP::Address::Util.string_to_ip(event.get(@source))
 
     matched_cidr_data = {}
 
@@ -62,17 +63,17 @@ class LogStash::Filters::PrivateGeoIP < LogStash::Filters::Base
 
     return if matched_cidr_data.nil? || matched_cidr_data.empty?
 
-    geo_data = event[@target].nil? ? {} : event[@target]
+    geo_data = event.get(@target).nil? ? {} : event.get(@target)
 
     if @merge
       geo_data.merge!(matched_cidr_data)
-      geo_data['ip'] = event[@source]
+      geo_data['ip'] = event.get(@source)
     else
       add_keys = matched_cidr_data.keys - geo_data.keys
       geo_data.merge!(matched_cidr_data.select{|k,v| add_keys.include?(k)})
     end
 
-    event[@target] = geo_data
+    event.set(@target, geo_data)
 
     filter_matched(event)
   end
