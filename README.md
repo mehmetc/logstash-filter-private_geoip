@@ -1,6 +1,6 @@
 # Logstash Plugin
 
-[![Travis Build Status](https://travis-ci.org/logstash-plugins/logstash-filter-private_geoip.svg)](https://travis-ci.org/logstash-plugins/logstash-filter-private_geoip)
+[![Travis Build Status](https://travis-ci.org/mehmetc/logstash-filter-private_geoip.svg)](https://travis-ci.org/mehmetc/logstash-filter-private_geoip)
 
 This is a plugin for [Logstash](https://github.com/elastic/logstash).
 
